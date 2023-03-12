@@ -1,17 +1,17 @@
 #!/bin/sh
 
-${POD_NETWORK_CIDR:-192.168.0.0/16}
-${INSTALL_CALICO:-true}
-${INSTALL_OPENEBS:-true}
+${POD_NETWORK_CIDR:=192.168.0.0/16}
+${INSTALL_CALICO:=true}
+${INSTALL_OPENEBS:=true}
 
 sudo kubeadm init --pod-network-cidr $POD_NETWORK_CIDR
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
-if [ "$INSTALL_CALICO" == "true" ]; then 
+if [ "$INSTALL_CALICO" = "true" ]; then 
     kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
 fi
 
-if [ "$INSTALL_OPENEBS" == "true" ]; then
+if [ "$INSTALL_OPENEBS" = "true" ]; then
     # install openebs-operator
     kubectl apply -f https://openebs.github.io/charts/openebs-operator.yaml
     # install lvm-operator
